@@ -11,10 +11,11 @@
 
 import re
 import copy
+import sys
 
 permittedSchemes = {}
 
-def Blockshading(colour,line_code, fill_code):
+def Blockshading(colour, line_code, fill_code):
   scheme = colourScheme('Blockshading_'+colour)
   scheme.baseProfColourMap = '#fff--#fff(contour1)--#'+fill_code+'(contour1)--#'+fill_code
   scheme.basePostColourMap = '#fff--#fff(contour1)--#'+fill_code+'(contour1)--#'+fill_code
@@ -24,9 +25,8 @@ def Blockshading(colour,line_code, fill_code):
   scheme.mainPostMeanColour1D = '#'+line_code
   scheme.mainBestFitColour2D = '#'+line_code
   scheme.mainPostMeanColour2D = '#'+line_code
-  scheme.fillTransparency2D = '0.85' #so far this is not actually functional in ctioga2; presumably it will work in later versions.
+  scheme.fillTransparency2D = '0.85' # so far this is not actually functional in ctioga2; presumably it will work in later versions.
   return scheme
-
 
 class colourScheme:
   # Class for pippi plotting colour schemes
@@ -95,13 +95,9 @@ class colourScheme:
   comparisonPostMeanColour = 'Grey'
 
   def __init__(self,name):
+    self.name = name.lower()
     global permittedSchemes
-    name = name.lower()
-    self.name = name
-    if permittedSchemes is None:
-      permittedSchemes = {name:self}
-    else:
-      permittedSchemes[name] = self
+    permittedSchemes[self.name] = self
 
   def colourMap(self,contours,kind):
     #Construct colourmap from base colour map and contour levels
